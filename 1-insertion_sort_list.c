@@ -23,10 +23,12 @@ void swap(listint_t *node1, listint_t *node2)
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *node = *list;
-	listint_t *tmp = node->next;
-	listint_t *prev;
+	listint_t *node, *tmp, *prev;
 
+	if (!list)
+		return;
+	node = *list;
+	tmp = node->next;
 	while (tmp)
 	{
 		if (node->n > tmp->n)
