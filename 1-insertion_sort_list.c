@@ -26,7 +26,6 @@ void insertion_sort_list(listint_t **list)
 	listint_t *node = *list;
 	listint_t *tmp = node->next;
 	listint_t *prev;
-	int c = 0;
 
 	while (tmp)
 	{
@@ -40,7 +39,6 @@ void insertion_sort_list(listint_t **list)
 			while (prev && prev->n > tmp->n)
 			{
 				swap(prev, tmp);
-				c++;
 				if (!tmp->prev)
 					*list = tmp;
 				print_list(*list);
@@ -49,8 +47,6 @@ void insertion_sort_list(listint_t **list)
 		}
 		else
 			node = tmp;
-		c++;
 		tmp = node->next;
 	}
-	printf("%d", c);
 }
