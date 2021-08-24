@@ -16,9 +16,9 @@ void bubble_sort(int *array, size_t size)
 	{
 		/* Set flag to 0 to denote no change has been made yet this iteration. */
 		flag = 0;
-		for (i = 0; i < 10; i++)
+		for (i = 0; i < size; i++)
 		{
-			if (i < 9 && array[i] > array[i + 1])
+			if (i < size - 1 && array[i] > array[i + 1])
 			{
 				/* Swap the misordered integers. */
 				tmp = array[i];
