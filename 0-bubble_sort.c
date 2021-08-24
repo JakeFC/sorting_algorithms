@@ -8,7 +8,8 @@
  */
 void bubble_sort(int *array, size_t size)
 {
-	int i, tmp;
+	unsigned int i;
+	int tmp;
 	char flag = 1;
 
 	/* As long as a change was made, iterate again. */
