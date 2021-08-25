@@ -30,12 +30,10 @@ unsigned int Lomuto(int *array, size_t low, size_t high, size_t size)
 		}
 	}
 	/* The pivot value is placed directly after all lower values */
-	if (high != ++Li)
-	{
-		array[high] = array[Li];
-		array[Li] = pivot;
+	array[high] = array[++Li];
+	array[Li] = pivot;
+	if (high != Li)
 		print_array(array, size);
-	}
 	return (Li);
 }
 /**
@@ -47,13 +45,28 @@ unsigned int Lomuto(int *array, size_t low, size_t high, size_t size)
 void quick_sort(int *array, size_t size)
 {
 	unsigned int low, high, nextLow;
+	int tmpHigh;
 
-	for (low = 0, high = size - 1; low < high; low = nextLow, high = size - 1)
+	if (!array)
+		return;
+	/* Reset low to first high found - 1 and high to length of array */
+	for (low = 0, high = size - 1; low < size; low = nextLow, high = size - 1)
 	{
-		nextLow = Lomuto(array, low, high, size) + 1;
+		/* Store next high in an int, in case it is negative */
+		tmpHigh = Lomuto(array, low, high, size) - 1;
+		/* Next low will be the previous high + 1, or next high + 2 */
+		nextLow = tmpHigh + 2;
+		/* Continue to next iteration if tmpHigh is negative */
+		if (tmpHigh < 0)
+			continue;
+		/* Cast next high to an unsigned int for comparison with low and */
+		/* use with Lomuto */
+		high = tmpHigh;
+		/* While there is still a partition to parse, continue sorting */
 		while (low < high)
 		{
-			high = Lomuto(array, low, high, size) - 1;
+			Lomuto(array, low, high, size);
+			high--;
 		}
 	}
 }
