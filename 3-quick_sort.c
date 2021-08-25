@@ -10,11 +10,11 @@
  * @size: Length of the array.
  * Return: The index of the resulting partition.
  */
-unsigned int Lomuto(int *array, size_t low, size_t high, size_t size)
+unsigned int Lomuto(int *array, int low, int high, size_t size)
 {
 	int pivot, tmp;
 	/* These store the Array index and Lomuto partition index. */
-	unsigned int Ai, Li;
+	int Ai, Li;
 
 	pivot = array[high];
 	Li = low - 1;
@@ -30,12 +30,37 @@ unsigned int Lomuto(int *array, size_t low, size_t high, size_t size)
 		}
 	}
 	/* The pivot value is placed directly after all lower values */
-	array[high] = array[++Li];
-	array[Li] = pivot;
-	if (high != Li)
+	if (high != ++Li && pivot != array[Li])
+	{
+		array[high] = array[Li];
+		array[Li] = pivot;
 		print_array(array, size);
+	}
 	return (Li);
 }
+
+/**
+ * recursive_quick_sort - Sorts an array of integers in ascending order
+ * recursively, using the Quick sort algorithm.
+ * @array: Array to be sorted.
+ * @low: Starting point of the array partition to be sorted.
+ * @high: End point of the array partition to be sorted.
+ * @size: Length of the array overall.
+ */
+void recursive_quick_sort(int *array, int low, int high, size_t size)
+{
+	int Li;
+
+	if (low < high)
+	{
+		/* Partition the array and save the index of the sorted value */
+		Li = Lomuto(array, low, high, size);
+		/* Do it again on the partitions below and above that index */
+		recursive_quick_sort(array, low, Li - 1, size);
+		recursive_quick_sort(array, Li + 1, high, size);
+	}
+}
+
 /**
  * quick_sort - Sorts an array of integers in ascending order,
  * using the Quick sort algorithm.
@@ -44,29 +69,5 @@ unsigned int Lomuto(int *array, size_t low, size_t high, size_t size)
  */
 void quick_sort(int *array, size_t size)
 {
-	unsigned int low, high, nextLow;
-	int tmpHigh;
-
-	if (!array)
-		return;
-	/* Reset low to first high found - 1 and high to length of array */
-	for (low = 0, high = size - 1; low < size; low = nextLow, high = size - 1)
-	{
-		/* Store next high in an int, in case it is negative */
-		tmpHigh = Lomuto(array, low, high, size) - 1;
-		/* Next low will be the previous high + 1, or next high + 2 */
-		nextLow = tmpHigh + 2;
-		/* Continue to next iteration if tmpHigh is negative */
-		if (tmpHigh < 0)
-			continue;
-		/* Cast next high to an unsigned int for comparison with low and */
-		/* use with Lomuto */
-		high = tmpHigh;
-		/* While there is still a partition to parse, continue sorting */
-		while (low < high)
-		{
-			Lomuto(array, low, high, size);
-			high--;
-		}
-	}
+	recursive_quick_sort(array, 0, size - 1, size);
 }
